@@ -497,15 +497,18 @@ class NotificationsHandlerService: MethodChannel.MethodCallHandler, Notification
 
     private fun sendHttpRequest(json: String,packageName:String?) {
         val client = OkHttpClient()
-        val url = "https://p2psys-messages.konomik.com/v1/watcher/notification"
         val sharedPrefs = mContext.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
+        val url: String = sharedPrefs.getString("flutter.url", "")!!
+        Log.d(TAG, "url: ${url}")
         val infoText = sharedPrefs.getString("flutter.appsA", "empty")
+        val stateA = sharedPrefs.getString("flutter.appState", "empty")
         val uid = sharedPrefs.getString("flutter.accessTokenKey", "empty")
         Log.d(TAG, "is_first_run: ${uid}")
-        
-        if (!uid.isNullOrEmpty() && infoText != null && !packageName.isNullOrEmpty() && infoText.contains(packageName)){
+        Log.d(TAG, "appState: ${stateA}")
+        if (stateA!="resumed"  && !uid.isNullOrEmpty() && infoText != null && !packageName.isNullOrEmpty() && infoText.contains(packageName)){
         val body = RequestBody.create("application/json; charset=utf-8"?.toMediaTypeOrNull(), json)
         Log.d(TAG, "send notification body: ${json}")
+        Log.d(TAG, "send notification body: ${stateA}")
 
         val request = Request.Builder()
             .url(url)
