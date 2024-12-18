@@ -482,7 +482,7 @@ class NotificationsHandlerService: MethodChannel.MethodCallHandler, Notification
         val gson = Gson()
         val json = gson.toJson(notificationMap)
         val packageName = evt.data["package_name"] as? String?
-            sendHttpRequest("${json}",packageName)
+            // sendHttpRequest("${json}",packageName) 
         }
 
         // why mBackgroundChannel can be null?
